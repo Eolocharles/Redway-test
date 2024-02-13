@@ -1,24 +1,29 @@
 package com.eolo.app.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name="tb_users")
 public class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Campo nome é obrigatório!")
     private String name;
 
+    @NotBlank(message = "Campo sobrenome é obrigatório!")
     private String lastName;
+    @Email(message = "Entre com um email válido")
+    @Column(unique = true)
     private String email;
 
     public User() {
