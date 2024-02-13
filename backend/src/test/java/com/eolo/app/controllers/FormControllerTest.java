@@ -1,30 +1,60 @@
 package com.eolo.app.controllers;
 
-import static org.hamcrest.Matchers.containsString;
-import static
-        org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static
-        org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static
-        org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static
-        org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import com.eolo.app.entities.User;
+import com.eolo.app.repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.ui.Model;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
-@WebMvcTest(FormController.class)
- class FormControllerTest {
-    @Autowired
-    private MockMvc mockMvc;
-        @Test
-         void testHomePage() throws Exception {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("home"))
-                .andExpect(content().string(
-                        containsString("Formulário de Registro")));
-        }
+public class FormControllerTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private Model model;
+
+    @InjectMocks
+    private FormController formController;
+
+    @BeforeEach
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
+    }
+
+    @Test
+    public void testForm() {
+        String result = formController.form(model);
+        assertEquals("form", result);
+        verify(model).addAttribute(eq("user"), any(User.class));
+    }
+
+    @Test
+    public void testSave_Success() {
+        User user = new User();
+        String result = formController.save(user);
+        assertEquals("redirect:/success", result);
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testSave_Error() {
+        doThrow(new RuntimeException("Simulated save error")).when(userRepository).save(any(User.class));
+        User user = new User();
+        String result = formController.save(user);
+        assertEquals("redirect:/error", result);
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testSuccess() {
+        String result = formController.success();
+        assertEquals("success", result);
+    }
 }
