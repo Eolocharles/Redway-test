@@ -20,3 +20,7 @@ Redway-test é uma aplicação web MVC desenvolvida em Java utilizando o framewo
 4. Abra o navegador e vá até o endereço http://localhost:8080.
 
 A aplicação contém um formulário que permite coletar o nome, sobrenome e email do usuário. Ela valida se o email já existe na base de dados e retorna uma página de sucesso ou de erro conforme o caso.
+![redway-test.png](redway-test.png)
+![redway-test.png](sucesso.png)
+![redway-test.png](error.png)
+
