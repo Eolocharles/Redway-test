@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Formulário de Registro</title>
+  <link rel="stylesheet" th:href="@{/styles.css}" />
+</head>
+<body>
+<h1>Formulário de Registro</h1>
+<p>Por favor preencha este formulário com as informações requeridas</p>
+<form method="post" action="/save" th:object="${user}">
+  <fieldset>
+    <label for="first-name">Nome: <input id="first-name" name="first-name" type="text" required th:field="*{name}" /></label>
+    <label for="last-name">Sobrenome: <input id="last-name" name="last-name" type="text" required th:field="*{lastName}" /></label>
+    <label for="email">Email: <input id="email" name="email" type="email" required th:field="*{email}"/></label>
+  </fieldset>
+  <input type="submit" value="Enviar" />
+
+</form>
+</body>
+</html>
